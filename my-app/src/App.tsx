@@ -2,9 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-interface Props {
+// to listen to the background script
 
-}
+interface Props {}
 
 interface deal {
     deal_id: string,
@@ -31,18 +31,20 @@ export default class App extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-
     }
 
-    getListIndex(begginingIndex: number, endIndex: number) {
+    sendToBackground(data: string[]) {
+        console.log(data)
+        chrome.runtime.sendMessage({data: data});
+    }
 
-        fetch('http://localhost:3000/deals/' + begginingIndex + '/' + endIndex)
+    getListIndex(beginningIndex: number, endIndex: number) {
+        fetch('http://localhost:3000/deals/' + beginningIndex + '/' + endIndex)
             .then(response => response.json())
-            .then(data => this.setState({data: data}));
-
+            .then(data => this.setState({data: data}))
     }
 
-    getDataElements(renderData: any[]) {
+    getDataElements(renderData: deal[]) {
         if (renderData) {
             return (
                 renderData.map((renderDeal: deal) => {
@@ -84,8 +86,8 @@ export default class App extends React.Component<Props, State> {
     }
 
     render() {
-        const renderData: any[] = this.state.data
-        console.log(renderData)
+        const renderData: deal[] = this.state.data
+        this.sendToBackground(renderData.flatMap((deal: deal) => deal.retailer_domains))
         return (
             <div className="App">
                 <header className="App-header">
