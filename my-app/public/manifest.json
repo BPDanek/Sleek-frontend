@@ -17,5 +17,14 @@
   ],
   "background": {
     "service_worker": "background.js"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["content-script.js"]
+    }
+  ]
 }

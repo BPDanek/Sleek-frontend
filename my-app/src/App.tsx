@@ -33,8 +33,8 @@ export default class App extends React.Component<Props, State> {
     componentWillUnmount() {
     }
 
-    sendToBackground(data: string[]) {
-        console.log(data)
+    sendToBackground(data: deal[]) {
+        // console.log(data)
         chrome.runtime.sendMessage({data: data});
     }
 
@@ -87,7 +87,7 @@ export default class App extends React.Component<Props, State> {
 
     render() {
         const renderData: deal[] = this.state.data
-        this.sendToBackground(renderData.flatMap((deal: deal) => deal.retailer_domains))
+        this.sendToBackground(renderData)
         return (
             <div className="App">
                 <header className="App-header">
